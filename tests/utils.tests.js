@@ -19,7 +19,7 @@ describe('exists', function () {
     // we disable the next line, because we explicitly want to test against void
     expectFalse((void 0)) // eslint-disable-line
     expectFalse(undefined)
-    expectFalse('')
+    expectFalse(null)
 
     let someVar
     expectFalse(someVar)
