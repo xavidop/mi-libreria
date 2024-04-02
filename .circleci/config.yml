@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  test:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/node:20.5.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm install
+      - run:
+          name: Run lint
+          command: npm run lint:report
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+workflows:
+  test-deploy:
+    jobs:
+      - test:
+          context: dev
